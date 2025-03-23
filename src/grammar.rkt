@@ -18,7 +18,7 @@
 
 program: LBRAC stmt-list RBRAC END
 stmt-list: stmt stmt-list | ∅
-stmt: id "=" expr ";"
+stmt: id EQUALS expr SEMICOLON
     | IF LPAREN expr RPAREN stmt-list ENDIF SEMICOLON
     | READ id SEMICOLON
     | WRITE expr SEMICOLON
