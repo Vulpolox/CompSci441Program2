@@ -5,7 +5,7 @@
 
 (provide tokenize)
 
-;; EXAMPLE FROM DOCUMENTATION
+;; EXAMPLE TOKENIZER FROM DOCUMENTATION
 
 #|
 (define (tokenize ip)
@@ -28,6 +28,8 @@
   next-token)
 |#
 
+
+;; TOKENIZER
 
 (define (tokenize ip)
   (port-count-lines! ip)
@@ -73,5 +75,3 @@
   ;; Return a function that generates tokens
   (define (next-token) (my-lexer ip))
   next-token)
-
-
