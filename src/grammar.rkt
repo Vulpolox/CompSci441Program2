@@ -16,7 +16,7 @@
 
 ;; GRAMMAR
 
-program: LBRAC stmt-list RBRAC END
+program: LBRAC stmt-list RBRAC "$$"
 stmt-list: stmt stmt-list | ∅
 stmt: id EQUALS expr SEMICOLON
     | IF LPAREN expr RPAREN stmt-list ENDIF SEMICOLON
@@ -29,5 +29,5 @@ etail: PLUS expr
      | COMPARE expr
      | ∅
 id: LETTER+
-num: NUMSIGN DIGIT+
+num: [NUMSIGN] DIGIT+
 
