@@ -24,9 +24,9 @@ stmt: id EQUALS expr SEMICOLON
     | WRITE expr SEMICOLON
 expr: id etail
     | num etail
+num: [NUMSIGN] DIGIT+
 etail: PLUS expr
      | MINUS expr
      | COMPARE expr
      | ∅
 id: LETTER+
-num: [NUMSIGN] DIGIT+
