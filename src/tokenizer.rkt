@@ -37,8 +37,8 @@
     (lexer-src-pos
 
      ;; misc. terminals
-     ["{" (token 'LBRAC lexeme)]
-     ["}" (token 'RBRAC lexeme)]
+     ; ["{" (token 'LBRAC lexeme)]
+     ; ["}" (token 'RBRAC lexeme)]
      ["if" (token 'IF lexeme)]
      ["(" (token 'LPAREN lexeme)]
      [")" (token 'RPAREN lexeme)]

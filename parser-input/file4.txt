@@ -1,8 +1,7 @@
 A = 6; 
-B# = 5; 
+#B = 5; 
 X = -2; 
 if (A + B > 10)
    X = A + 2;
-endif 
+endif;
 write A + B - X; 
-  

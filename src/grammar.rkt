@@ -16,7 +16,8 @@
 
 ;; GRAMMAR
 
-program: LBRAC stmt-list RBRAC END
+;program: LBRAC stmt-list RBRAC END
+program: stmt-list END
 stmt-list: stmt stmt-list | ∅
 stmt: id EQUALS expr SEMICOLON
     | IF LPAREN expr RPAREN stmt-list ENDIF SEMICOLON
