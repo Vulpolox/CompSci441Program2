@@ -34,9 +34,6 @@
       (token 'LETTER lexeme)]
 
      ;; numsign / plus / minus
-     ;; (from DeepSeek) -> solves my ambiguity problem
-     ;; by using peek-char for lookahead that won't modify the
-     ;; ip
      [(union "+" "-")
       (let ([next-char (peek-char ip)])
         (if (and next-char (char-numeric? next-char))
