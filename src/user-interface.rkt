@@ -58,8 +58,8 @@
     )
   )
   
-  ;; print off line number and offending invalid token for scanning errors,
-  ;; print off approximate line number for parsing errors
+  ;; return string w/ line number and offending invalid token for scanning errors,
+  ;; return string w/ approximate line number for parsing errors
   (if is-scanner-error
     [let* 
       ([raw-invalid-token (ninth split-exn)]
@@ -100,7 +100,7 @@
 ;; function for use in the execution loop; keeps calling 'func' until user indicates
 ;; they don't want to continue
 ;; signature: (func, [string]) -> (func) or void
-(define (continue? func [message "Continue? Y to Continue, Anything Else to Exit"])
+(define (continue? func [message "Continue [y], Exit [any other key]"])
   (printf "~n~a~n---~n   >>>" message)
   (define input (string-trim (read-line)))
 
