@@ -1,6 +1,5 @@
 #lang brag
 
-
 ;; ----- GRAMMAR ------------------------------------------
 
 ;program: LBRAC stmt-list RBRAC END

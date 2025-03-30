@@ -52,7 +52,7 @@
        #:result current-line-number)
       ([current-line buffer])
       (if (or (equal? found #t) 
-              (regexp-match? (format "~a" invalid-token) current-line))
+              (string-contains? current-line (format "~a" invalid-token)))
           (values current-line-number #t)
           (values (+ current-line-number 1) #f))
     )
