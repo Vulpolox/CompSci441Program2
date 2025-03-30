@@ -1,36 +1,14 @@
 #lang racket
 
-(require br-parser-tools/lex)
 (require brag/support)
 
 (provide tokenize)
 
-;; EXAMPLE TOKENIZER FROM DOCUMENTATION
 
-#|
-(define (tokenize ip)
-  (port-count-lines! ip)
-  (define my-lexer
-    (lexer-src-pos
-     [(repetition 1 +inf.0 numeric)
-      (token 'INTEGER (string->number lexeme))]
-     [upper-case
-      (token 'STRING lexeme)]
-     ["b"
-      (token 'STRING " ")]
-     [";"
-      (token ";" lexeme)]
-     [whitespace
-      (token 'WHITESPACE lexeme #:skip? #t)]
-     [(eof)
-      (void)]))
-  (define (next-token) (my-lexer ip))
-  next-token)
-|#
+;; ----- TOKENIZER ------------------------------------------
 
-
-;; TOKENIZER
-
+;; tokenizer funciton that takes an input port
+;; and converts it to a list of tokens
 (define (tokenize ip)
   (port-count-lines! ip)
   (define my-lexer
@@ -62,9 +40,9 @@
      [(union "+" "-")
       (let ([next-char (peek-char ip)])
         (if (and next-char (char-numeric? next-char))
-            ;; If followed by a digit, treat as NUMSIGN (part of a number)
+            ;; if followed by a digit, treat as NUMSIGN (part of a number)
             (token 'NUMSIGN lexeme)
-            ;; Otherwise, treat as PLUS or MINUS (arithmetic operation)
+            ;; otherwise, treat as PLUS or MINUS (arithmetic operation)
             (token (if (equal? lexeme "+") 'PLUS 'MINUS) lexeme)))]
 
      ;; digit
@@ -79,6 +57,6 @@
      ;; eof
      [(eof) (token 'EOF lexeme)]))
 
-  ;; Return a function that generates tokens
+  ;; return a function that generates tokens
   (define (next-token) (my-lexer ip))
   next-token)

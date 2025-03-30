@@ -4,7 +4,6 @@
 (require "tokenizer.rkt")
 
 (provide parse)
-(provide repl-parse)
 (provide execution-loop)
 
 (define (safe-parse parser-func tokenizer-func input-port)
@@ -35,7 +34,7 @@
   (define is-scanner-error (equal? "lexer:" (first split-exn)))
 
   ;; helper function for looking up
-  ;; line number of error
+  ;; line number of invalid token in the buffer
   (define (get-line-number buffer invalid-token)
     (for/fold
       ([current-line-number 1]
@@ -69,16 +68,15 @@
 (define my-parser (make-rule-parser program))
 (define my-tokenizer tokenize)
 
-
 ;; partial application of safe-parse for use in the execution loop
-(define parse (lambda (input-port) (safe-parse my-parser my-tokenizer input-port)))
+(define el-parse (lambda (input-port) (safe-parse my-parser my-tokenizer input-port)))
 
 ;; partial application of safe-parse called "parse" as per the assignment requirements
 ;; for use in the DrRacket REPL
-(define repl-parse (lambda (file-path) 
+(define parse (lambda (file-path) 
                       (safe-parse my-parser my-tokenizer 
                                   (open-input-file (format "./parser-input/~a" file-path)))
-                   )
+              )
 )
 
 
@@ -117,5 +115,5 @@
 (define (execution-loop)
     (define file-path (get-file-path))
     (define input-port (open-input-file file-path))
-    (begin (parse input-port)
+    (begin (el-parse input-port)
            (continue? execution-loop)))

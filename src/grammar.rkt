@@ -1,20 +1,7 @@
 #lang brag
 
-;; EXAMPLE GRAMMAR FROM DOCUMENTATION
 
-;; sentence: verb optional-adjective object
-;; verb: greeting
-;; optional-adjective: ["happy" "frumpy"]
-;; greeting: "hello" | "hola" | "aloha"
-;; object: "world" | WORLD
-
-
-;; NOTES: terminals are all caps identifiers
-;; non-terminals are lowercase identifiers;
-;; epsilons are ∅
-
-
-;; GRAMMAR
+;; ----- GRAMMAR ------------------------------------------
 
 ;program: LBRAC stmt-list RBRAC END
 program: stmt-list END
