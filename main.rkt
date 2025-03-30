@@ -2,4 +2,4 @@
 
 (require "./src/user-interface.rkt")
 
-(execution-loop)
+(continue? execution-loop "Use Execution Loop [y]; Use REPL (only DrRacket) [any other key]")

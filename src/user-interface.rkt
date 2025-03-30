@@ -5,7 +5,13 @@
 
 (provide parse)
 (provide execution-loop)
+(provide continue?)
 
+
+;; ----- PARSER WRAPPER ------------------------------------------
+
+;; wrapper function for handling errors while parsing
+;; signature: (func, func, input-port) -> void
 (define (safe-parse parser-func tokenizer-func input-port)
   ;; buffer for looking up the lines at which errors occur
   (define buffer (port->lines (peeking-input-port input-port)))
@@ -29,12 +35,16 @@
   ))
 
 
+;; ----- ERROR MESSAGE HANDLING ------------------------------------------
+
+;; function for manipulating brag's default parser error messages
+;; signature: (string, list<string>) -> string
 (define (modify-exn-message exn-message buffer)
   (define split-exn (string-split exn-message " "))
   (define is-scanner-error (equal? "lexer:" (first split-exn)))
 
-  ;; helper function for looking up
-  ;; line number of invalid token in the buffer
+  ;; helper function for looking up line number of invalid token in the buffer
+  ;; signature: (list<string>, string) -> int
   (define (get-line-number buffer invalid-token)
     (for/fold
       ([current-line-number 1]
@@ -47,7 +57,9 @@
           (values (+ current-line-number 1) #f))
     )
   )
-
+  
+  ;; print off line number and offending invalid token for scanning errors,
+  ;; print off approximate line number for parsing errors
   (if is-scanner-error
     [let* 
       ([raw-invalid-token (ninth split-exn)]
@@ -63,6 +75,9 @@
       (format "Parsing Error at/around Line ~a" adjusted-line-number)]
   )
 )
+
+
+;; ----- MAIN FUNCTIONS ------------------------------------------
 
 ;; create bindings for the parser and tokenizer/lexer
 (define my-parser (make-rule-parser program))
@@ -80,38 +95,38 @@
 )
 
 
-;; in:  takes a function; asks user if they want to continue
-;; out: if user does, calls function
-(define (continue? func)
-  (display "\n---\nContinue? Y to Continue, Anything Else to Exit\n   >>>")
+;; ----- INTERFACE ------------------------------------------
+
+;; function for use in the execution loop; keeps calling 'func' until user indicates
+;; they don't want to continue
+;; signature: (func, [string]) -> (func) or void
+(define (continue? func [message "Continue? Y to Continue, Anything Else to Exit"])
+  (printf "~n~a~n---~n   >>>" message)
   (define input (string-trim (read-line)))
 
   (if [or (equal? input "Y")
           (equal? input "y")]
       (func)
-      (display "---\n"))
+      (printf "---~n"))
   )
 
-
-;; in:  no args
-;; out: returns a valid string file name from user input
+;; function for use in the execution loop; gets a valid file name from user input
+;; signauture: () -> string
 (define (get-file-path)
   (display "Enter Parser Input File Name\n   >>>")
   (define input (string-trim (read-line)))
   
-  ;; Construct the full path to the file in the parser-input directory
+  ;; construct file path
   (define path (format "./parser-input/~a" input))
   
-  ;; Check if the file exists
+  ;; if file exists, return the path, otherwise print error and recurse
   (if (file-exists? path)
       path
       (begin
         (printf "Error: File Doesn't Exist: ~a~n---~n" path)
         (get-file-path))))
 
-
-;; in:  no args
-;; out: main program execution loop
+;; execution loop
 (define (execution-loop)
     (define file-path (get-file-path))
     (define input-port (open-input-file file-path))
