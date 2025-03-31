@@ -1,6 +1,31 @@
 # Racket Parser
 ### CS441 Program 2
 ***
+# Program Description
+This program reads in a text file from user input and attempts to tokenize and parse it into an abstract syntax tree based on the below grammar:
+***
+program → stmt-list  
+stmt-list → stmt stmt-list | ε  
+stmt → id = expr  
+⠀⠀⠀⠀⠀⠀| if (expr) stmt endif;  
+⠀⠀⠀⠀⠀⠀| read id;     
+⠀⠀⠀⠀⠀⠀| write expr;  
+expr → id etail  
+⠀⠀⠀⠀⠀⠀| num etail  
+etail → + expr  
+⠀⠀⠀⠀⠀⠀| - expr  
+⠀⠀⠀⠀⠀⠀| compare expr  
+⠀⠀⠀⠀⠀⠀| ε   
+id → [a-zA-z]+  
+num → numsign digit+  
+numsign → + | - | ε  
+compare → < | <= | > | >= | == | !=
+***
+If the parse is successful, the program will print "ACCEPT" along with produced the syntax tree to the console; if the parse fails, an error message containing the error type (parsing/scanning) and the line at which it occurs will be printed instead
+
+
+# Dependencies
+- [brag](https://docs.racket-lang.org/brag/) `raco pkg install brag`
 # How to Run Code (Windows)
 ### Using CLI w/ Custom UI
 1. Clone this repository
